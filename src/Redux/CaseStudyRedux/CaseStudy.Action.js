@@ -39,9 +39,10 @@ export const createCaseStudy = (data) => async (dispatch) => {
       payload: response.data,
     });
   } catch (error) {
+    console.log(error.response?.data?.error)
     dispatch({
       type: CREATE_CASESTUDY_FAIL,
-      payload: error.response?.data?.message || error.message,
+      payload: error.response?.data?.error || error.message,
     });
   }
 };
@@ -56,16 +57,17 @@ export const getAllCaseStudies = (page = 1, limit = 10) => async (dispatch) => {
     dispatch({
       type: GET_CASESTUDIES_SUCCESS,
       payload: {
-        data: response.data.caseStudies,
-        totalPages: response.data.totalPages,
-        currentPage: response.data.currentPage,
-        totalItems: response.data.totalItems,
+        data: response?.data?.data?.caseStudies,
+        totalPages: response?.data?.data?.totalPages,
+        currentPage: response?.data?.data?.page,
+        totalItems: response?.data?.data?.totalCount,
       },
+
     });
   } catch (error) {
     dispatch({
       type: GET_CASESTUDIES_FAIL,
-      payload: error.response?.data?.message || error.message,
+      payload: error.response?.data?.error || error.message,
     });
   }
 };
@@ -75,7 +77,7 @@ export const getSingleCaseStudy = (id) => async (dispatch) => {
   try {
     dispatch({ type: GET_SINGLE_CASESTUDY_REQUEST });
 
-    const response = await axios.get(`${url}/api/casestudies/${id}`, config);
+    const response = await axios.get(`${url}/creator/${id}`, config);
 
     dispatch({
       type: GET_SINGLE_CASESTUDY_SUCCESS,
@@ -84,7 +86,7 @@ export const getSingleCaseStudy = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_SINGLE_CASESTUDY_FAIL,
-      payload: error.response?.data?.message || error.message,
+      payload: error.response?.data?.error || error.message,
     });
   }
 };
@@ -94,7 +96,7 @@ export const updateCaseStudy = (id, data) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_CASESTUDY_REQUEST });
 
-    const response = await axios.put(`${url}/api/casestudies/${id}`, data, config);
+    const response = await axios.put(`${url}/creator/${id}`, data, config);
 
     dispatch({
       type: UPDATE_CASESTUDY_SUCCESS,
@@ -103,7 +105,7 @@ export const updateCaseStudy = (id, data) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: UPDATE_CASESTUDY_FAIL,
-      payload: error.response?.data?.message || error.message,
+      payload: error.response?.data?.error || error.message,
     });
   }
 };

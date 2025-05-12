@@ -1,10 +1,9 @@
+ 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCaseStudies } from "../../Redux/CaseStudyRedux/CaseStudy.Action";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";
-import { HStack } from "@chakra-ui/react";
 
 const Container = styled.div`
   display: flex;
@@ -117,25 +116,8 @@ const Button = styled.button`
     background-color: #0056b3;
   }
 `;
-const CreateButton = styled.button`
-  display: flex; // Ensures icon and text are in one line
-  align-items: center; // Vertically center icon and text
-  gap: 0.5rem; // Space between icon and text
-  padding: 0.5rem 1rem;
-  margin: 0.5rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
 
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
-
-export default function ListAllCaseStudy() {
+export default function Analytics() {
   const dispatch = useDispatch();
 
   const [page, setPage] = useState(1);
@@ -170,12 +152,7 @@ export default function ListAllCaseStudy() {
   return (
     <Container>
       <Title>All Case Studies</Title>
-      <Link to="/casestudy">
-        <CreateButton>
-          <FaPlus />
-          Create Case Study
-        </CreateButton>
-      </Link>
+
       {loading && <LoadingText>Loading...</LoadingText>}
       {error && <ErrorText>{error}</ErrorText>}
 
@@ -209,11 +186,9 @@ export default function ListAllCaseStudy() {
                     </Link>
                   </Td>
                   <Td>
-                    <Link to={`/viewcasestudy/${item._id}`}>
-                      <Button onClick={() => handlePreview(item.slug)}>
-                        Preview
-                      </Button>
-                    </Link>
+                    <Button onClick={() => handlePreview(item.slug)}>
+                      Preview
+                    </Button>
                   </Td>
                 </Tr>
               ))}

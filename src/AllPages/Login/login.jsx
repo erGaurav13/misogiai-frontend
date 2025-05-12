@@ -9,7 +9,7 @@ import {
   
   VStack,
   Text,
-  chakra,
+  chakra
 } from "@chakra-ui/react";
 import ReCAPTCHA from "react-google-recaptcha";
 import img from "../../img/app.jpeg";

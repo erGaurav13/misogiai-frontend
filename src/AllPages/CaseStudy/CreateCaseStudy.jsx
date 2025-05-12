@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../Redux/AuthRedux/Auth.Action";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
-
+import { createCaseStudy } from "../../Redux/CaseStudyRedux/CaseStudy.Action";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 // Initial form state
 let obj = {
   title: "",
@@ -14,6 +14,7 @@ let obj = {
   tools: [],
   outcomes: { metrics: "", testimonials: [{ name: "", content: "" }] },
   isPublished: false,
+  theme: 1,
 };
 
 // Styled components
@@ -88,23 +89,29 @@ const Button = styled.button`
   }
 `;
 
-const SignUpLink = styled.p`
-  color: blue;
-  font-size: 1rem;
-  text-align: center;
-  margin-top: 1rem;
+const Select = styled.select`
+width: 100%;
+padding: 10px;
+margin: 1rem 0;
+border: 1px solid #ccc;
+border-radius: 4px;
+font-size: 1rem;
 
-  a {
-    text-decoration: none;
-    color: blue;
-  }
+&:focus {
+  border-color: #884ebe;
+}
 `;
+
+const Option = styled.option`
+padding: 10px;
+`;
+
 
 const CreateCaseStudy = () => {
   const dispatch = useDispatch();
-  const select = useSelector((store) => store.AuthReducer);
   const [form, setForm] = useState(obj);
-
+  const navigate = useNavigate();
+  const { error, success } = useSelector((state) => state.caseStudyReducer);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
@@ -150,7 +157,10 @@ const CreateCaseStudy = () => {
       ...form,
       outcomes: {
         ...form.outcomes,
-        testimonials: [...form.outcomes.testimonials, { name: "", content: "" }],
+        testimonials: [
+          ...form.outcomes.testimonials,
+          { name: "", content: "" },
+        ],
       },
     });
   };
@@ -158,14 +168,20 @@ const CreateCaseStudy = () => {
   const handleSubmit = () => {
     // Handle form submission logic
     console.log(form); // Example of how to log the collected data
-    return
-    dispatch(login(form)); // Assuming you want to dispatch login for now
+
+    dispatch(createCaseStudy(form)); // Assuming you want to dispatch login for now
   };
 
   useEffect(() => {
     localStorage.setItem("chakra-ui-color-mode", "light");
   }, []);
 
+  console.log(success,"success")
+  useEffect(() => {
+    if (success) {
+      navigate("/list-casestudy"); // or your desired route
+    }
+  }, [success, navigate]);
   return (
     <Wrapper>
       <FormBox>
@@ -270,7 +286,9 @@ const CreateCaseStudy = () => {
             placeholder="Enter tools"
             name="tools"
             value={form.tools.join(", ")}
-            onChange={(e) => setForm({ ...form, tools: e.target.value.split(",") })}
+            onChange={(e) =>
+              setForm({ ...form, tools: e.target.value.split(",") })
+            }
           />
         </div>
 
@@ -281,7 +299,12 @@ const CreateCaseStudy = () => {
             placeholder="Enter metrics"
             name="metrics"
             value={form.outcomes.metrics}
-            onChange={(e) => setForm({ ...form, outcomes: { ...form.outcomes, metrics: e.target.value } })}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                outcomes: { ...form.outcomes, metrics: e.target.value },
+              })
+            }
           />
           {form.outcomes.testimonials.map((item, index) => (
             <div key={index}>
@@ -311,12 +334,33 @@ const CreateCaseStudy = () => {
             <input
               type="checkbox"
               checked={form.isPublished}
-              onChange={() => setForm({ ...form, isPublished: !form.isPublished })}
+              onChange={() =>
+                setForm({ ...form, isPublished: !form.isPublished })
+              }
             />
             Published
           </label>
         </div>
-
+        <div>
+  <Label>Case Study Theme</Label>
+  <Select
+    name="theme"
+    value={form.theme}
+    onChange={(e) => setForm({ ...form, theme: parseInt(e.target.value) })}
+  >
+    <Option value={1}>Minimalist (Clean & Simple)</Option>
+    <Option value={2}>Detailed (Rich & Comprehensive)</Option>
+    <Option value={3}>Interactive (Engaging & Dynamic)</Option>
+  </Select>
+  <Text>Choose a visual style for your case study presentation</Text>
+</div>
+        {error && error.length > 0 && (
+          <div style={{ color: "red", marginBottom: "1rem" }}>
+            {error.map((err, idx) => (
+              <div key={idx}>{err}</div>
+            ))}
+          </div>
+        )}
         <Button onClick={handleSubmit}>Submit</Button>
       </FormBox>
     </Wrapper>

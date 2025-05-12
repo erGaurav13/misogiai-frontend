@@ -6,6 +6,7 @@ import Signup from "../AllPages/Login/Signup";
 import CreateCaseStudy from "../AllPages/CaseStudy/CreateCaseStudy";
 import ViewCaseStudy from "../AllPages/CaseStudy/ViewCaseStudy";
 import ListAllCaseStudy from "../AllPages/CaseStudy/ListAllCaseStudy";
+import EditCaseStudy from "../AllPages/CaseStudy/EditCaseStudy";
    
 export default function AllRoutes() {
   return (
@@ -15,10 +16,9 @@ export default function AllRoutes() {
 
 
       <Route path="/casestudy" element={  <PrivateRoute> <CreateCaseStudy /></PrivateRoute>} />
-      <Route path="/viewcasestudy" element={  <PrivateRoute> <ViewCaseStudy /></PrivateRoute>} />
+      <Route path="/viewcasestudy/:id" element={  <PrivateRoute> <ViewCaseStudy /></PrivateRoute>} />
       <Route path="/list-casestudy" element={  <PrivateRoute> <ListAllCaseStudy /></PrivateRoute>} />
-
- 
+      <Route path="/edit-case-study/:id" element={<EditCaseStudy />} />
      {/* ViewCaseStudy  ListAllCaseStudy*/}
       {/* All Private Routes nested under Test Layout */}
       {/* <Route

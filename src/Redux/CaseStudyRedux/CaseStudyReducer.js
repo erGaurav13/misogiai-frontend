@@ -54,7 +54,7 @@ import {
               totalPages: action.payload.totalPages,
               currentPage: action.payload.currentPage,
               totalItems: action.payload.totalItems,
-              success: true,
+              success: false,
             };
   
       case GET_SINGLE_CASESTUDY_SUCCESS:
@@ -75,8 +75,13 @@ import {
           ),
           caseStudy: action.payload,
         };
-  
-      case CREATE_CASESTUDY_FAIL:
+        case CREATE_CASESTUDY_FAIL:
+          return {
+            ...state,
+            loading: false,
+            error: Array.isArray(action.payload) ? action.payload : [action.payload],
+            success: false,
+          };
       case GET_CASESTUDIES_FAIL:
       case GET_SINGLE_CASESTUDY_FAIL:
       case UPDATE_CASESTUDY_FAIL:

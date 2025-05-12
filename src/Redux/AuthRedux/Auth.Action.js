@@ -20,9 +20,9 @@ export const login = (info) => async (dispatch) => {
     dispatch({ type: LOGIN_REQUEST });
     let data = await axios.post(`${url}/auth/login`, info);
     console.log(data);
-    dispatch({ type: LOGIN_SUCESS, payload: data.data.data.token });
-
-    alert(data?.data?.data?.message);
+    dispatch({ type: LOGIN_SUCESS, payload: data.data.token });
+    localStorage.setItem("token", data.data.token);
+    alert(data?.data?.message);
   } catch (e) {
     // console.log(e)
     alert(e?.response?.data?.message);
